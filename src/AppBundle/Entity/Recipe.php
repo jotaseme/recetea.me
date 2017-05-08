@@ -118,6 +118,20 @@ class Recipe
      */
     private $createdBy;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="idRecipe")
+     */
+    private $idUser;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idUser = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -440,5 +454,39 @@ class Recipe
     public function getCreatedBy()
     {
         return $this->createdBy;
+    }
+
+    /**
+     * Add idUser
+     *
+     * @param \AppBundle\Entity\User $idUser
+     *
+     * @return Recipe
+     */
+    public function addIdUser(\AppBundle\Entity\User $idUser)
+    {
+        $this->idUser[] = $idUser;
+
+        return $this;
+    }
+
+    /**
+     * Remove idUser
+     *
+     * @param \AppBundle\Entity\User $idUser
+     */
+    public function removeIdUser(\AppBundle\Entity\User $idUser)
+    {
+        $this->idUser->removeElement($idUser);
+    }
+
+    /**
+     * Get idUser
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
     }
 }

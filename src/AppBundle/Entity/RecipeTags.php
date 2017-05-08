@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * RecipeTags
  *
- * @ORM\Table(name="recipe_tags", indexes={@ORM\Index(name="fk_recipe_idx", columns={"id_recipe"}), @ORM\Index(name="id_tag_idx", columns={"id_tag"})})
+ * @ORM\Table(name="recipe_tags", indexes={@ORM\Index(name="fk_recipe_idx", columns={"id_recipe"})})
  * @ORM\Entity
  */
 class RecipeTags
@@ -22,6 +22,13 @@ class RecipeTags
     private $idRecipeTags;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="tag", type="string", length=45, nullable=true)
+     */
+    private $tag;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -34,16 +41,6 @@ class RecipeTags
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
      */
     private $createdAt;
-
-    /**
-     * @var \Tag
-     *
-     * @ORM\ManyToOne(targetEntity="Tag")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_tag", referencedColumnName="id_tag")
-     * })
-     */
-    private $idTag;
 
     /**
      * @var \Recipe
@@ -65,6 +62,30 @@ class RecipeTags
     public function getIdRecipeTags()
     {
         return $this->idRecipeTags;
+    }
+
+    /**
+     * Set tag
+     *
+     * @param string $tag
+     *
+     * @return RecipeTags
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Get tag
+     *
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
     }
 
     /**
@@ -113,30 +134,6 @@ class RecipeTags
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Set idTag
-     *
-     * @param \AppBundle\Entity\Tag $idTag
-     *
-     * @return RecipeTags
-     */
-    public function setIdTag(\AppBundle\Entity\Tag $idTag = null)
-    {
-        $this->idTag = $idTag;
-
-        return $this;
-    }
-
-    /**
-     * Get idTag
-     *
-     * @return \AppBundle\Entity\Tag
-     */
-    public function getIdTag()
-    {
-        return $this->idTag;
     }
 
     /**

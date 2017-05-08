@@ -63,6 +63,28 @@ class User
      */
     private $active;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="idUser")
+     * @ORM\JoinTable(name="fav_recipe_list",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
+     *   }
+     * )
+     */
+    private $idRecipe;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idRecipe = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 
     /**
@@ -217,5 +239,39 @@ class User
     public function getActive()
     {
         return $this->active;
+    }
+
+    /**
+     * Add idRecipe
+     *
+     * @param \AppBundle\Entity\Recipe $idRecipe
+     *
+     * @return User
+     */
+    public function addIdRecipe(\AppBundle\Entity\Recipe $idRecipe)
+    {
+        $this->idRecipe[] = $idRecipe;
+
+        return $this;
+    }
+
+    /**
+     * Remove idRecipe
+     *
+     * @param \AppBundle\Entity\Recipe $idRecipe
+     */
+    public function removeIdRecipe(\AppBundle\Entity\Recipe $idRecipe)
+    {
+        $this->idRecipe->removeElement($idRecipe);
+    }
+
+    /**
+     * Get idRecipe
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getIdRecipe()
+    {
+        return $this->idRecipe;
     }
 }
