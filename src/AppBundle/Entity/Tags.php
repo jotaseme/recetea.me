@@ -18,6 +18,8 @@ class Tags
      * @ORM\Column(name="id_tag", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"recipe_detail"})
+     *
      */
     private $idTag;
 

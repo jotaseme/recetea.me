@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * Steps
  *
@@ -25,6 +25,8 @@ class Steps
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @Groups({"recipe_detail"})
+     *
      */
     private $description;
 
@@ -32,6 +34,8 @@ class Steps
      * @var integer
      *
      * @ORM\Column(name="step_order", type="integer", nullable=true)
+     * @Groups({"recipe_detail"})
+     *
      */
     private $stepOrder;
 

@@ -123,6 +123,22 @@ class Recipe
      */
     private $recipe_tags;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="idRecipe")
+     * @ORM\JoinTable(name="recipe_ingredients",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_ingredient", referencedColumnName="id_ingredient")
+     *   }
+     * )
+     * @Groups({"recipe_detail"})
+     *
+     */
+    private $recipe_ingredients;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -136,25 +152,10 @@ class Recipe
      *     @ORM\JoinColumn(name="id_step", referencedColumnName="id_step")
      *   }
      * )
+     *
+     * @Groups({"recipe_detail"})
      */
     private $recipe_steps;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="idRecipe")
-     * @ORM\JoinTable(name="recipe_ingredients",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="id_ingredient", referencedColumnName="id_ingredient")
-     *   }
-     * )
-     * * @Groups({"recipe_detail"})
-     *
-     */
-    private $recipe_ingredients;
 
     /**
      * Constructor
@@ -165,7 +166,6 @@ class Recipe
         $this->recipe_steps = new ArrayCollection();
         $this->recipe_tags = new ArrayCollection();
     }
-
 
     /**
      * Get idRecipe
@@ -223,54 +223,6 @@ class Recipe
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set ingredients
-     *
-     * @param integer $ingredients
-     *
-     * @return Recipe
-     */
-    public function setIngredients($ingredients)
-    {
-        $this->ingredients = $ingredients;
-
-        return $this;
-    }
-
-    /**
-     * Get ingredients
-     *
-     * @return integer
-     */
-    public function getIngredients()
-    {
-        return $this->ingredients;
-    }
-
-    /**
-     * Set tags
-     *
-     * @param integer $tags
-     *
-     * @return Recipe
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
-    }
-
-    /**
-     * Get tags
-     *
-     * @return integer
-     */
-    public function getTags()
-    {
-        return $this->tags;
     }
 
     /**
