@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Recipe
@@ -18,6 +20,7 @@ class Recipe
      * @ORM\Column(name="id_recipe", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     *
      */
     private $idRecipe;
 
@@ -25,6 +28,8 @@ class Recipe
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     * @Groups({"recipes_list", "recipe_detail"})
+     *
      */
     private $name;
 
@@ -32,22 +37,10 @@ class Recipe
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @Groups({"recipes_list", "recipe_detail"})
+     *
      */
     private $description;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="ingredients", type="integer", nullable=true)
-     */
-    private $ingredients;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="tags", type="integer", nullable=true)
-     */
-    private $tags;
 
     /**
      * @var string
@@ -108,6 +101,8 @@ class Recipe
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="created_by", referencedColumnName="id_user")
      * })
+     * @Groups({"recipe_detail"})
+     *
      */
     private $createdBy;
 
@@ -123,6 +118,8 @@ class Recipe
      *     @ORM\JoinColumn(name="id_tag", referencedColumnName="id_tag")
      *   }
      * )
+     * @Groups({"recipe_detail"})
+     *
      */
     private $recipe_tags;
 
@@ -143,12 +140,30 @@ class Recipe
     private $recipe_steps;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="idRecipe")
+     * @ORM\JoinTable(name="recipe_ingredients",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_ingredient", referencedColumnName="id_ingredient")
+     *   }
+     * )
+     * * @Groups({"recipe_detail"})
+     *
+     */
+    private $recipe_ingredients;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
-        $this->fav_recipes = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->recipe_steps = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fav_recipes = new ArrayCollection();
+        $this->recipe_steps = new ArrayCollection();
+        $this->recipe_tags = new ArrayCollection();
     }
 
 
@@ -517,5 +532,39 @@ class Recipe
     public function getRecipeSteps()
     {
         return $this->recipe_steps;
+    }
+
+    /**
+     * Add recipeIngredient
+     *
+     * @param \AppBundle\Entity\Ingredient $recipeIngredient
+     *
+     * @return Recipe
+     */
+    public function addRecipeIngredient(\AppBundle\Entity\Ingredient $recipeIngredient)
+    {
+        $this->recipe_ingredients[] = $recipeIngredient;
+
+        return $this;
+    }
+
+    /**
+     * Remove recipeIngredient
+     *
+     * @param \AppBundle\Entity\Ingredient $recipeIngredient
+     */
+    public function removeRecipeIngredient(\AppBundle\Entity\Ingredient $recipeIngredient)
+    {
+        $this->recipe_steps->removeElement($recipeIngredient);
+    }
+
+    /**
+     * Get recipeIngredient
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecipeIngredients()
+    {
+        return $this->recipe_ingredients;
     }
 }

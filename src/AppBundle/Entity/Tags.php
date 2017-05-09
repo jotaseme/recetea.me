@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * Tags
  *
@@ -25,6 +25,7 @@ class Tags
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     * @Groups({"recipe_detail"})
      */
     private $name;
 
