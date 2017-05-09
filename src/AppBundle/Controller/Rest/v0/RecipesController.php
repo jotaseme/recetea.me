@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller\Rest\v0;
 
+use AppBundle\Entity\Recipe;
+use AppBundle\Form\RecipeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -38,5 +40,28 @@ class RecipesController extends Controller
     {
         return $this->getDoctrine()->getManager()->getRepository('AppBundle:Recipe')
             ->find($id_recipe);
+    }
+
+    /**
+     * @Rest\Post("/recipes")
+     */
+    public function postRecipesAction(Request $request)
+    {
+        $recipe = new Recipe();
+
+        $form = $this->get('form.factory')->createNamed(null, RecipeType::class, $recipe);
+        $form->handleRequest($request);
+
+        if ($form->isValid() && $form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($recipe);
+            $em->flush();
+            return array("recipe" => $recipe);
+        }
+
+        return array(
+            'form' => $form,
+        );
+
     }
 }
