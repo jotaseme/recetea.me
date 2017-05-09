@@ -57,13 +57,6 @@ class Recipe
     private $duration;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="steps", type="integer", nullable=true)
-     */
-    private $steps;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="updated_at", type="datetime", nullable=true)
@@ -121,16 +114,41 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="idRecipe")
+     * @ORM\ManyToMany(targetEntity="Tags", inversedBy="idRecipe")
+     * @ORM\JoinTable(name="recipe_tags",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_tag", referencedColumnName="id_tag")
+     *   }
+     * )
      */
-    private $idUser;
+    private $recipe_tags;
+
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Steps", inversedBy="idRecipe")
+     * @ORM\JoinTable(name="recipe_steps",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_step", referencedColumnName="id_step")
+     *   }
+     * )
+     */
+    private $recipe_steps;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->idUser = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->fav_recipes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->recipe_steps = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -262,30 +280,6 @@ class Recipe
     public function getDuration()
     {
         return $this->duration;
-    }
-
-    /**
-     * Set steps
-     *
-     * @param integer $steps
-     *
-     * @return Recipe
-     */
-    public function setSteps($steps)
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
-
-    /**
-     * Get steps
-     *
-     * @return integer
-     */
-    public function getSteps()
-    {
-        return $this->steps;
     }
 
     /**
@@ -456,37 +450,72 @@ class Recipe
         return $this->createdBy;
     }
 
+
     /**
-     * Add idUser
+     * Add recipeTag
      *
-     * @param \AppBundle\Entity\User $idUser
+     * @param \AppBundle\Entity\Tags $recipeTag
      *
      * @return Recipe
      */
-    public function addIdUser(\AppBundle\Entity\User $idUser)
+    public function addRecipeTag(\AppBundle\Entity\Tags $recipeTag)
     {
-        $this->idUser[] = $idUser;
+        $this->recipe_tags[] = $recipeTag;
 
         return $this;
     }
 
     /**
-     * Remove idUser
+     * Remove recipeTag
      *
-     * @param \AppBundle\Entity\User $idUser
+     * @param \AppBundle\Entity\Tags $recipeTag
      */
-    public function removeIdUser(\AppBundle\Entity\User $idUser)
+    public function removeRecipeTag(\AppBundle\Entity\Tags $recipeTag)
     {
-        $this->idUser->removeElement($idUser);
+        $this->recipe_tags->removeElement($recipeTag);
     }
 
     /**
-     * Get idUser
+     * Get recipeTags
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getIdUser()
+    public function getRecipeTags()
     {
-        return $this->idUser;
+        return $this->recipe_tags;
+    }
+
+    /**
+     * Add recipeStep
+     *
+     * @param \AppBundle\Entity\Steps $recipeStep
+     *
+     * @return Recipe
+     */
+    public function addRecipeStep(\AppBundle\Entity\Steps $recipeStep)
+    {
+        $this->recipe_steps[] = $recipeStep;
+
+        return $this;
+    }
+
+    /**
+     * Remove recipeStep
+     *
+     * @param \AppBundle\Entity\Steps $recipeStep
+     */
+    public function removeRecipeStep(\AppBundle\Entity\Steps $recipeStep)
+    {
+        $this->recipe_steps->removeElement($recipeStep);
+    }
+
+    /**
+     * Get recipeSteps
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecipeSteps()
+    {
+        return $this->recipe_steps;
     }
 }
