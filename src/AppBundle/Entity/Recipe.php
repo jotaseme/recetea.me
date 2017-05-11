@@ -109,7 +109,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Tags", inversedBy="idRecipe")
+     * @ORM\ManyToMany(targetEntity="Tags", inversedBy="idRecipe", cascade={"persist"})
      * @ORM\JoinTable(name="recipe_tags",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
@@ -126,7 +126,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="idRecipe")
+     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="idRecipe", cascade={"persist"})
      * @ORM\JoinTable(name="recipe_ingredients",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
@@ -143,7 +143,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Steps", inversedBy="idRecipe")
+     * @ORM\ManyToMany(targetEntity="Steps", inversedBy="idRecipe", cascade={"persist"})
      * @ORM\JoinTable(name="recipe_steps",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
@@ -165,6 +165,7 @@ class Recipe
         $this->fav_recipes = new ArrayCollection();
         $this->recipe_steps = new ArrayCollection();
         $this->recipe_tags = new ArrayCollection();
+        $this->recipe_ingredients = new ArrayCollection();
     }
 
     /**
@@ -224,6 +225,7 @@ class Recipe
     {
         return $this->description;
     }
+
 
     /**
      * Set duration
@@ -427,6 +429,7 @@ class Recipe
      */
     public function addRecipeTag(\AppBundle\Entity\Tags $recipeTag)
     {
+
         $this->recipe_tags[] = $recipeTag;
 
         return $this;

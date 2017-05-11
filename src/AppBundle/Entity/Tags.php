@@ -26,12 +26,10 @@ class Tags
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="tag", type="string", length=100, nullable=true)
      * @Groups({"recipe_detail"})
      */
-    private $name;
-
-
+    private $tag;
 
     /**
      * Get idTag
@@ -44,26 +42,26 @@ class Tags
     }
 
     /**
-     * Set name
+     * Set tag
      *
-     * @param string $name
+     * @param string $tag
      *
      * @return Tags
      */
-    public function setName($name)
+    public function setTag($tag)
     {
-        $this->name = $name;
+        $this->tag= $tag;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get tag
      *
      * @return string
      */
-    public function getName()
+    public function getTag()
     {
-        return $this->name;
+        return $this->tag;
     }
 }

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Rest\v0;
 
 use AppBundle\Entity\Recipe;
+use AppBundle\Entity\Tags;
 use AppBundle\Form\RecipeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -48,12 +49,22 @@ class RecipesController extends Controller
     public function postRecipesAction(Request $request)
     {
         $recipe = new Recipe();
-
-        $form = $this->get('form.factory')->createNamed(null, RecipeType::class, $recipe);
+        $form = $this->get('form.factory')->createNamed('recipe_form', RecipeType::class, $recipe);
         $form->handleRequest($request);
+        $now = new \DateTime('now');
 
         if ($form->isValid() && $form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
+            $recipe->setActive(0);
+            $recipe->setCreatedAt($now);
+            $recipe->setUpdatedAt($now);
+            foreach ($recipe->getRecipeIngredients() as $ingredient){
+                $ingredient->setUpdatedAt($now);
+                $ingredient->setCreatedAt($now);
+            }
+            foreach ($recipe->getRecipeSteps() as $key => $step){
+                $step->setStepOrder($key);
+            }
             $em->persist($recipe);
             $em->flush();
             return array("recipe" => $recipe);
