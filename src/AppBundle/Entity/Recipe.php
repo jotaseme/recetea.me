@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Recipe
  *
  * @ORM\Table(name="recipe", indexes={@ORM\Index(name="fk_category_idx", columns={"id_category"}), @ORM\Index(name="fk_user_idx", columns={"created_by"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\RecipeRepository")
  */
 class Recipe
 {

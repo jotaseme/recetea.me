@@ -3,7 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * Category
  *
@@ -25,6 +25,8 @@ class Category
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     * @Groups({"categories_list"})
+     *
      */
     private $name;
 
