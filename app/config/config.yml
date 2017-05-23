@@ -62,6 +62,9 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        dql:
+                    numeric_functions:
+                        Rand: AppBundle\DQL\RandFunction
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -94,3 +97,17 @@ knp_paginator:
     template:
         pagination: 'KnpPaginatorBundle:Pagination:sliding.html.twig'     # sliding pagination controls template
         sortable: 'KnpPaginatorBundle:Pagination:sortable_link.html.twig' # sort link template
+
+lexik_form_filter:
+    force_case_insensitivity: false
+    encoding: ~
+    where_method: or
+    condition_pattern: text.contains
+
+lexik_jwt_authentication:
+    private_key_path: %kernel.root_dir%/../var/jwt/private.pem
+    public_key_path:  %kernel.root_dir%/../var/jwt/public.pem
+    pass_phrase:      %jwt_key_pass_phrase%
+    token_ttl:        3600000000
+
+

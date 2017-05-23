@@ -31,7 +31,6 @@ class CategoriesController extends Controller
      */
     public function getRecipesFromCategory($id_category)
     {
-
         $em = $this->get('doctrine.orm.entity_manager');
         return $em->getRepository('AppBundle:Recipe')->findRecipesByRootCategory($id_category);
     }

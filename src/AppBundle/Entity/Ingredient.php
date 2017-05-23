@@ -19,6 +19,7 @@ class Ingredient
      * @ORM\Column(name="id_ingredient", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"recipe_detail"})
      */
     private $idIngredient;
 
@@ -27,7 +28,7 @@ class Ingredient
      *
      * @ORM\Column(name="name", type="string", length=200, nullable=true)
      *
-     * * @Groups({"recipe_detail"})
+     * @Groups({"recipe_detail"})
      */
     private $name;
 
