@@ -20,6 +20,7 @@ class Recipe
      * @ORM\Column(name="id_recipe", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"recipes_list", "recipe_detail"})
      *
      */
     private $idRecipe;
@@ -46,6 +47,8 @@ class Recipe
      * @var string
      *
      * @ORM\Column(name="duration", type="string", length=45, nullable=true)
+     *
+     * @Groups({"recipe_detail"})
      */
     private $duration;
 
@@ -74,6 +77,8 @@ class Recipe
      * @var string
      *
      * @ORM\Column(name="image", type="string", length=100, nullable=true)
+     * @Groups({"recipes_list", "recipe_detail"})
+     *
      */
     private $image;
 
@@ -81,6 +86,7 @@ class Recipe
      * @var string
      *
      * @ORM\Column(name="portions", type="string", length=100, nullable=true)
+     * @Groups({"recipe_detail"})
      */
     private $portions;
 

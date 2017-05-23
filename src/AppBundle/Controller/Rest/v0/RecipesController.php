@@ -9,9 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Annotation\Groups;
 use FOS\RestBundle\Controller\Annotations\View;
+use AppBundle\Filters\RecipeFilterType;
 
 class RecipesController extends Controller
 {
@@ -21,25 +23,46 @@ class RecipesController extends Controller
      */
     public function getRecipesAction(Request $request)
     {
-        $em = $this->get('doctrine.orm.entity_manager');
-        $dql = "SELECT r FROM AppBundle:Recipe r";
-        $query = $em->createQuery($dql);
+        $filterBuilder = $this->get('doctrine.orm.entity_manager')
+            ->getRepository('AppBundle:Recipe')
+            ->createQueryBuilder('e');
 
-        $paginator = $this->get('knp_paginator');
-        return $paginator->paginate(
-            $query,
-            $request->query->getInt('page', 1),
-            2
+        $form = $this->get('form.factory')->create(RecipeFilterType::class);
+
+        if ($request->query->has($form->getName())) {
+            $form->submit($request->query->get($form->getName()));
+            $this->get('lexik_form_filter.query_builder_updater')->addFilterConditions($form, $filterBuilder);
+        }
+
+        $query = $filterBuilder->getQuery();
+        
+        $paginator  = $this->get('knp_paginator');
+        $recipes = array(
+            'index' => $request->query->getInt('page'),
+            'prev' => $request->query->getInt('page')-1,
+            'next' => $request->query->getInt('page')+1,
+            'recipes' => $paginator->paginate(
+                $query,
+                $request->query->getInt('page', 1),
+                2
+            )
         );
+        return $recipes;
     }
 
     /**
      * @Rest\Get("/recipes/{id_recipe}")
      * @View(serializerGroups={"recipe_detail"})
      */
-    public function showRecipeAction($id_recipe)
+    public function showRecipeAction(Request $request, $id_recipe)
     {
-        return $this->getDoctrine()->getManager()->getRepository('AppBundle:Recipe')
+        $em = $this->getDoctrine()->getManager();
+        $random = $request->query->get('random');
+        if($random){
+            return $em->getRepository('AppBundle:Recipe')
+                ->findOneRecipeRandomly(1);
+        }
+        return $em->getRepository('AppBundle:Recipe')
             ->find($id_recipe);
     }
 

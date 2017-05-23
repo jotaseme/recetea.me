@@ -17,4 +17,26 @@ class RecipeRepository extends EntityRepository
             )
             ->getResult();
     }
+
+    public function findAllQueryBuilder()
+    {
+        return $this->createQueryBuilder('recipe');
+    }
+
+    /**
+     * Get random entities
+     *
+     * @param int $count Entities count, default is 10
+     *
+     * @return array
+     */
+    public function findOneRecipeRandomly($count = 10)
+    {
+        return  $this->createQueryBuilder('q')
+            ->addSelect('RAND() as HIDDEN rand')
+            ->addOrderBy('rand')
+            ->setMaxResults($count)
+            ->getQuery()
+            ->getResult();
+    }
 }
