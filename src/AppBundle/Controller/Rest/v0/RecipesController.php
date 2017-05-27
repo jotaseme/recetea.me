@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Annotation\Groups;
 use FOS\RestBundle\Controller\Annotations\View;
 use AppBundle\Filters\RecipeFilterType;
+use Symfony\Component\HttpFoundation\Response;
+
 
 class RecipesController extends Controller
 {
@@ -68,34 +70,38 @@ class RecipesController extends Controller
 
     /**
      * @Rest\Post("/recipes")
+     * @View(serializerGroups={"recipe_detail"})
      */
     public function postRecipesAction(Request $request)
     {
         $recipe = new Recipe();
         $form = $this->get('form.factory')->createNamed('recipe_form', RecipeType::class, $recipe);
         $form->handleRequest($request);
-        $now = new \DateTime('now');
 
         if ($form->isValid() && $form->isSubmitted()) {
-            $em = $this->getDoctrine()->getManager();
-            $recipe->setActive(0);
-            $recipe->setCreatedAt($now);
-            $recipe->setUpdatedAt($now);
-            foreach ($recipe->getRecipeIngredients() as $ingredient){
-                $ingredient->setUpdatedAt($now);
-                $ingredient->setCreatedAt($now);
+            if(!$this->getUser()){
+                return new Response(\GuzzleHttp\json_encode('Unauthorized.'), Response::HTTP_UNAUTHORIZED);
             }
+            $em = $this->getDoctrine()->getManager();
+            self::base64ToImage($form->getData()->getImage(),"./uploads/images/". $form->getData()->getName() .".jpg");
+
+            $recipe->setImage($form->getData()->getName().'.jpg');
             foreach ($recipe->getRecipeSteps() as $key => $step){
                 $step->setStepOrder($key);
             }
+            $recipe->setCreatedBy($this->getUser());
             $em->persist($recipe);
             $em->flush();
-            return array("recipe" => $recipe);
+            return $recipe;
         }
 
-        return array(
-            'form' => $form,
-        );
+        return $form;
+    }
 
+    function base64ToImage($base64_string, $output_file) {
+        $file = fopen($output_file, "wb");
+        fwrite($file, base64_decode($base64_string));
+        fclose($file);
+        return $output_file;
     }
 }

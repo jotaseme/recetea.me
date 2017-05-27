@@ -7,7 +7,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-
 class RecipeType extends AbstractType
 {
     /**
@@ -24,6 +23,7 @@ class RecipeType extends AbstractType
             ))
             ->add('description')
             ->add('duration')
+            ->add('image')
             ->add('portions')
             ->add('recipe_steps', CollectionType::class, array(
                 'entry_type'=>StepsType::class,

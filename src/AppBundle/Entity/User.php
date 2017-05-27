@@ -44,7 +44,7 @@ class User implements UserInterface, \Serializable
      *     checkMX = true
      * )
      *
-     * @Groups({"user_detail"})
+     * @Groups({"recipe_detail", "user_detail"})
      */
     private $email;
 

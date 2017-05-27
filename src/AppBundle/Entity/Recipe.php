@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="recipe", indexes={@ORM\Index(name="fk_category_idx", columns={"id_category"}), @ORM\Index(name="fk_user_idx", columns={"created_by"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RecipeRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Recipe
 {
@@ -76,7 +77,7 @@ class Recipe
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=100, nullable=true)
+     * @ORM\Column(name="image",  type="text", length=4294967295, nullable=true)
      * @Groups({"recipes_list", "recipe_detail"})
      *
      */
@@ -527,5 +528,30 @@ class Recipe
     public function getRecipeIngredients()
     {
         return $this->recipe_ingredients;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setActiveValue()
+    {
+        $this->active = 0;
     }
 }
