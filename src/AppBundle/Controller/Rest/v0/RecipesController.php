@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller\Rest\v0;
 
+use AppBundle\Entity\Ingredient;
 use AppBundle\Entity\Recipe;
+use AppBundle\Entity\Steps;
 use AppBundle\Entity\Tags;
 use AppBundle\Form\RecipeType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -84,11 +86,46 @@ class RecipesController extends Controller
             }
             $em = $this->getDoctrine()->getManager();
             self::base64ToImage($form->getData()->getImage(),"./uploads/images/". $form->getData()->getName() .".jpg");
+            $tags =  $recipe->getRecipeTags()->get(0)->getTag();
+            $tags = substr($tags, 0, -1);
+            $tags = explode(";",$tags);
+            $recipe->removeRecipeTag($recipe->getRecipeTags()->get(0));
+
+            foreach ($tags as $tag){
+                $aux_tag = new Tags();
+                $aux_tag->setTag($tag);
+                $recipe->addRecipeTag($aux_tag);
+            }
+
+            $ingredients =  $recipe->getRecipeIngredients()->get(0)->getName();
+            $ingredients = substr($ingredients, 0, -1);
+
+            $ingredients = explode(";",$ingredients);
+            $recipe->removeRecipeIngredient($recipe->getRecipeIngredients()->get(0));
+
+            foreach ($ingredients as $ingredient){
+                $aux_ingredient = new Ingredient();
+                $aux_ingredient->setName($ingredient);
+                $recipe->addRecipeIngredient($aux_ingredient);
+            }
+
+            $steps =  $recipe->getRecipeSteps()->get(0)->getDescription();
+            $steps = substr($steps, 0, -1);
+            $steps = explode(";",$steps);
+            $recipe->removeRecipeStep($recipe->getRecipeSteps()->get(0));
+
+
+            foreach ($steps as $step){
+                $aux_step = new Steps();
+                $aux_step->setDescription($step);
+                $recipe->addRecipeStep($aux_step);
+            }
 
             $recipe->setImage($form->getData()->getName().'.jpg');
             foreach ($recipe->getRecipeSteps() as $key => $step){
                 $step->setStepOrder($key);
             }
+
             $recipe->setCreatedBy($this->getUser());
             $em->persist($recipe);
             $em->flush();
