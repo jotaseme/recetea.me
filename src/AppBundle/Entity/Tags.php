@@ -18,7 +18,7 @@ class Tags
      * @ORM\Column(name="id_tag", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"recipe_detail"})
+     * @Groups({"recipe_detail","tags_list"})
      *
      */
     private $idTag;
@@ -27,7 +27,7 @@ class Tags
      * @var string
      *
      * @ORM\Column(name="tag", type="string", length=100, nullable=true)
-     * @Groups({"recipe_detail"})
+     * @Groups({"recipe_detail", "tags_list"})
      */
     private $tag;
 
