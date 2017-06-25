@@ -17,11 +17,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use FOS\RestBundle\Controller\Annotations\View;
 use AppBundle\Filters\RecipeFilterType;
 use Symfony\Component\HttpFoundation\Response;
-
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 class RecipesController extends Controller
 {
     /**
+     * Returns a list of recipes. It supports simple filtering by recipe name and pagination.
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Returns a list of reci",
+     *  filters={
+     *      {"name"="page", "dataType"="integer"},
+     *      {"name"="recipe_filter[name]", "dateType"="string"}
+     *  },
+     *  statusCodes={
+     *         200="Successful request"
+     *     }
+     * )
+     *
      * @Rest\Get("/recipes")
      * @View(serializerGroups={"recipes_list"})
      */
@@ -39,7 +53,6 @@ class RecipesController extends Controller
         }
 
         $query = $filterBuilder->getQuery();
-        
         $paginator  = $this->get('knp_paginator');
         $recipes = array(
             'index' => $request->query->getInt('page'),

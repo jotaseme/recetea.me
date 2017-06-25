@@ -178,4 +178,9 @@ class Ingredient
     {
         $this->updatedAt = new \DateTime();
     }
+
+    function __toString()
+    {
+        return $this->name;
+    }
 }

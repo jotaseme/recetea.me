@@ -98,4 +98,9 @@ class Steps
     {
         return $this->stepOrder;
     }
+
+    function __toString()
+    {
+        return $this->description;
+    }
 }

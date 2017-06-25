@@ -251,4 +251,11 @@ class Category
     {
         return $this->createdAt;
     }
+
+    function __toString()
+    {
+        return $this->name;
+    }
+
+
 }

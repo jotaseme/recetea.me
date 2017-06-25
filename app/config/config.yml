@@ -79,7 +79,8 @@ fos_rest:
     body_listener: true
     format_listener:
         rules:
-            - { path: '^/', priorities: ['json'], fallback_format: json, prefer_extension: false }
+            - { path: '^/api/v1', priorities: ['json'], fallback_format: json, prefer_extension: false }
+            - { path: '^/', stop: true }
     param_fetcher_listener: true
     view:
         view_response_listener: 'force'
@@ -110,4 +111,11 @@ lexik_jwt_authentication:
     pass_phrase:      %jwt_key_pass_phrase%
     token_ttl:        3600000000
 
+easy_admin:
+    site_name: 'Recetea<em style="font-size: 80%;">ME</em>'
+    entities:
+        - AppBundle\Entity\Recipe
+        - AppBundle\Entity\Category
+        - AppBundle\Entity\User
 
+nelmio_api_doc: ~

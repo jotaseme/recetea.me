@@ -64,4 +64,11 @@ class Tags
     {
         return $this->tag;
     }
+
+    function __toString()
+    {
+        return $this->tag;
+    }
+
+
 }

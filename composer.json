@@ -8,7 +8,10 @@
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
     },
     "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" },
+        "psr-4": {
+            "Tests\\Functional\\": "tests/functional",
+            "Tests\\DataFixtures\\ORM\\": "tests/datafixtures"
+        },
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
@@ -19,9 +22,11 @@
         "fabpot/goutte": "^3.2",
         "friendsofsymfony/rest-bundle": "^2.2",
         "incenteev/composer-parameter-handler": "^2.0",
+        "javiereguiluz/easyadmin-bundle": "^1.16",
         "knplabs/knp-paginator-bundle": "^2.5",
         "lexik/form-filter-bundle": "~5.0",
         "lexik/jwt-authentication-bundle": "^2.4",
+        "nelmio/api-doc-bundle": "^2.13",
         "sensio/distribution-bundle": "^5.0",
         "sensio/framework-extra-bundle": "^3.0.2",
         "symfony/dom-crawler": "^3.2",
@@ -32,6 +37,7 @@
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0"
     },
@@ -53,7 +59,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.5.9"
+            "php": "7.0.10"
         },
         "sort-packages": true
     },

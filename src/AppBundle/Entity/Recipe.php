@@ -116,7 +116,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Tags", inversedBy="idRecipe", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Tags", cascade={"persist"})
      * @ORM\JoinTable(name="recipe_tags",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
@@ -133,7 +133,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Ingredient", inversedBy="idRecipe", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Ingredient", cascade={"persist"})
      * @ORM\JoinTable(name="recipe_ingredients",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
@@ -150,7 +150,7 @@ class Recipe
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Steps", inversedBy="idRecipe", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Steps", cascade={"persist"})
      * @ORM\JoinTable(name="recipe_steps",
      *   joinColumns={
      *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")

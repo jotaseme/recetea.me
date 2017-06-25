@@ -1,3 +1,14 @@
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
+    prefix:   /api/v1
+
+# EasyBundle
+easy_admin_bundle:
+    resource: "@EasyAdminBundle/Controller/"
+    type:     annotation
+    prefix:   /admin
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   specification/api/doc

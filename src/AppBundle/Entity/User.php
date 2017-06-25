@@ -77,21 +77,6 @@ class User implements UserInterface, \Serializable
     private $active;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="idUser")
-     * @ORM\JoinTable(name="fav_recipe_list",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
-     *   }
-     * )
-     */
-    private $idRecipe;
-
-    /**
      * Constructor
      */
     public function __construct()
