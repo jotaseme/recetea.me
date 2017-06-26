@@ -26,7 +26,7 @@ class RecipesController extends Controller
      *
      * @ApiDoc(
      *  resource=true,
-     *  description="Returns a list of reci",
+     *  description="Returns a list of recipes",
      *  filters={
      *      {"name"="page", "dataType"="integer"},
      *      {"name"="recipe_filter[name]", "dateType"="string"}
@@ -68,19 +68,34 @@ class RecipesController extends Controller
     }
 
     /**
-     * @Rest\Get("/recipes/{id_recipe}")
+     * /**
+     * Returns a single detailed recipe.
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Returns a single detailed recipe",
+     *  statusCodes={
+     *         200="Successful request",
+     *         404="Resource not found"
+     *     }
+     * )
+     *
+     * @Rest\Get("/recipes/{recipe}")
      * @View(serializerGroups={"recipe_detail"})
+     *
+     * @param Request $request
+     * @param Recipe $recipe
+     * @return Recipe
      */
-    public function showRecipeAction(Request $request, $id_recipe)
+    public function showRecipeAction(Request $request, Recipe $recipe)
     {
-        $em = $this->getDoctrine()->getManager();
         $random = $request->query->get('random');
         if($random){
+            $em = $this->getDoctrine()->getManager();
             return $em->getRepository('AppBundle:Recipe')
                 ->findOneRecipeRandomly(1);
         }
-        return $em->getRepository('AppBundle:Recipe')
-            ->find($id_recipe);
+        return $recipe;
     }
 
     /**

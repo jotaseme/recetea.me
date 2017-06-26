@@ -50,6 +50,16 @@ class RecipesControllerTest extends ApiTest
 
     public function testGetRecipesContent()
     {
-        
+        $this->client->request('GET', '/api/v1/recipes');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+
+        $this->assertObjectHasAttribute('name', $recipes[0]);
+        $this->assertObjectHasAttribute('description', $recipes[0]);
+        $this->assertObjectHasAttribute('image', $recipes[0]);
+        $this->assertObjectHasAttribute('recipe_tags', $recipes[0]);
     }
 }

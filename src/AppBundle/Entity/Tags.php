@@ -27,7 +27,7 @@ class Tags
      * @var string
      *
      * @ORM\Column(name="tag", type="string", length=100, nullable=true)
-     * @Groups({"recipe_detail", "tags_list"})
+     * @Groups({"recipes_list", "recipe_detail", "tags_list"})
      */
     private $tag;
 

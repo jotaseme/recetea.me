@@ -20,7 +20,7 @@ use Tests\DataFixtures\ORM\StepsFixture;
 use Tests\DataFixtures\ORM\TagsFixture;
 use Tests\DataFixtures\ORM\UserFixture;
 
-abstract class ApiTest extends WebTestCase
+abstract class  ApiTest extends WebTestCase
 {
     public $em;
     public $client;

@@ -92,7 +92,7 @@ class Recipe
     private $portions;
 
     /**
-     * @var \Category
+     * @var Category
      *
      * @ORM\ManyToOne(targetEntity="Category")
      * @ORM\JoinColumns({
@@ -102,7 +102,7 @@ class Recipe
     private $idCategory;
 
     /**
-     * @var \User
+     * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
@@ -125,7 +125,7 @@ class Recipe
      *     @ORM\JoinColumn(name="id_tag", referencedColumnName="id_tag")
      *   }
      * )
-     * @Groups({"recipe_detail"})
+     * @Groups({"recipes_list", "recipe_detail"})
      *
      */
     private $recipe_tags;
@@ -385,7 +385,7 @@ class Recipe
      *
      * @return Recipe
      */
-    public function setIdCategory(\AppBundle\Entity\Category $idCategory = null)
+    public function setIdCategory(Category $idCategory = null)
     {
         $this->idCategory = $idCategory;
 
@@ -409,7 +409,7 @@ class Recipe
      *
      * @return Recipe
      */
-    public function setCreatedBy(\AppBundle\Entity\User $createdBy = null)
+    public function setCreatedBy(User $createdBy = null)
     {
         $this->createdBy = $createdBy;
 
@@ -434,7 +434,7 @@ class Recipe
      *
      * @return Recipe
      */
-    public function addRecipeTag(\AppBundle\Entity\Tags $recipeTag)
+    public function addRecipeTag(Tags $recipeTag)
     {
 
         $this->recipe_tags[] = $recipeTag;
@@ -447,7 +447,7 @@ class Recipe
      *
      * @param \AppBundle\Entity\Tags $recipeTag
      */
-    public function removeRecipeTag(\AppBundle\Entity\Tags $recipeTag)
+    public function removeRecipeTag(Tags $recipeTag)
     {
         $this->recipe_tags->removeElement($recipeTag);
     }
@@ -469,7 +469,7 @@ class Recipe
      *
      * @return Recipe
      */
-    public function addRecipeStep(\AppBundle\Entity\Steps $recipeStep)
+    public function addRecipeStep(Steps $recipeStep)
     {
         $this->recipe_steps[] = $recipeStep;
 
@@ -481,7 +481,7 @@ class Recipe
      *
      * @param \AppBundle\Entity\Steps $recipeStep
      */
-    public function removeRecipeStep(\AppBundle\Entity\Steps $recipeStep)
+    public function removeRecipeStep(Steps $recipeStep)
     {
         $this->recipe_steps->removeElement($recipeStep);
     }
@@ -503,7 +503,7 @@ class Recipe
      *
      * @return Recipe
      */
-    public function addRecipeIngredient(\AppBundle\Entity\Ingredient $recipeIngredient)
+    public function addRecipeIngredient(Ingredient $recipeIngredient)
     {
         $this->recipe_ingredients[] = $recipeIngredient;
 
@@ -515,7 +515,7 @@ class Recipe
      *
      * @param \AppBundle\Entity\Ingredient $recipeIngredient
      */
-    public function removeRecipeIngredient(\AppBundle\Entity\Ingredient $recipeIngredient)
+    public function removeRecipeIngredient(Ingredient $recipeIngredient)
     {
         $this->recipe_steps->removeElement($recipeIngredient);
     }
