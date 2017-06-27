@@ -10,7 +10,7 @@ parameters:
 
 framework:
     #esi: ~
-    #translator: { fallbacks: ['%locale%'] }
+    translator: { fallbacks: ['%locale%'] }
     secret: '%secret%'
     router:
         resource: '%kernel.root_dir%/config/routing.yml'
@@ -113,9 +113,51 @@ lexik_jwt_authentication:
 
 easy_admin:
     site_name: 'Recetea<em style="font-size: 80%;">ME</em>'
+    disabled_actions: ['delete', 'new']
+    formats:
+            date:     'd/m/Y'
+            time:     'H:i'
+            datetime: 'd/m/Y H:i:s'
     entities:
-        - AppBundle\Entity\Recipe
-        - AppBundle\Entity\Category
-        - AppBundle\Entity\User
+        Recipe:
+              class: AppBundle\Entity\Recipe
+              label: 'Recipes'
+              list:
+                  fields: [{ property: 'idRecipe', label: 'ID ' },
+                   'name', { property: 'active', label: 'Status' }, 'duration', 'portions',  { property: 'idCategory', label: 'Category' }, { property: 'createdBy', label: 'User' } ]
+                  title: "Recipes"
+                  actions:
+                      - { name: 'show', label: 'Show' }
+                      - { name: 'search', label: 'Search' }
+                      - { name: 'edit', label: 'Edit' }
 
+              show:
+                  title: 'Recipe (#%%entity_id%%) detail'
+                  fields:
+                       - { property: 'name', icon: 'customer' }
+                       - { property: 'description', icon: 'customer' }
+                       - { property: 'active', type: 'boolean' }
+                       - { property: 'duration' }
+                       - { property: 'portions' }
+                       - { property: 'image', type: 'image', base_path: '/uploads/images/' }
+                       - { property: 'recipe_tags', label: 'Tags'}
+                       - { property: 'recipe_ingredients', label: 'Ingredients' }
+                       - { property: 'recipe_steps', label: 'Steps' }
+                       - { property: 'createdBy', label: 'User' }
+                       - { property: 'createdAt', label: 'Created' }
+              edit:
+                  title: 'Recipe (#%%entity_id%%) edit'
+                  fields:
+                      - { property: 'name', icon: 'customer' }
+                      - { property: 'description', icon: 'customer' }
+                      - { property: 'active' }
+                      - { property: 'duration' }
+                      - { property: 'portions' }
+                      - { property: 'recipe_tags' }
+                      - { property: 'recipe_ingredients' }
+                  actions:
+                      - { name: 'list', label: 'Back to list' }
+              search:
+                  help: null
+                  title: "Recipes search"
 nelmio_api_doc: ~

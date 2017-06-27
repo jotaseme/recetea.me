@@ -22,8 +22,7 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 class RecipesController extends Controller
 {
     /**
-     * Returns a list of recipes. It supports simple filtering by recipe name and pagination.
-     *
+     * Returns a list of recipes among several index for pagination. It supports simple filtering by recipe name and pagination.
      * @ApiDoc(
      *  resource=true,
      *  description="Returns a list of recipes",
@@ -74,28 +73,51 @@ class RecipesController extends Controller
      * @ApiDoc(
      *  resource=true,
      *  description="Returns a single detailed recipe",
+     *  requirements={
+     *      {
+     *          "name"="recipe",
+     *          "dataType"="integer",
+     *          "requirement"="\d+",
+     *          "description"="recipe id"
+     *      }
+     *  },
      *  statusCodes={
      *         200="Successful request",
      *         404="Resource not found"
-     *     }
+     *  }
      * )
      *
-     * @Rest\Get("/recipes/{recipe}")
+     * @Rest\Get("/recipes/{recipe}", requirements={"recipe": "\d+"})
      * @View(serializerGroups={"recipe_detail"})
      *
-     * @param Request $request
      * @param Recipe $recipe
      * @return Recipe
      */
-    public function showRecipeAction(Request $request, Recipe $recipe)
+    public function showRecipeAction(Recipe $recipe)
     {
-        $random = $request->query->get('random');
-        if($random){
-            $em = $this->getDoctrine()->getManager();
-            return $em->getRepository('AppBundle:Recipe')
-                ->findOneRecipeRandomly(1);
-        }
         return $recipe;
+    }
+
+    /**
+     * Returns a single detailed recipe randomly.
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Returns a single detailed recipe randomly",
+     *  statusCodes={
+     *         200="Successful request",
+     *  }
+     * )
+     *
+     * @Rest\Get("/recipes/random")
+     * @View(serializerGroups={"recipe_detail"})
+     * @return Recipe
+     */
+    public function showRecipeRandomlyAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        return $em->getRepository('AppBundle:Recipe')
+                ->findOneRecipeRandomly(1);
     }
 
     /**

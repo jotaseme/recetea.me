@@ -15,7 +15,7 @@ class RecipeRepository extends EntityRepository
                       JOIN AppBundle:Category c2 WITH c1.idParent = c2.idCategory
                       WHERE c2.idCategory = '.$id_category
             )
-            ->getResult();
+            ->getSingleResult();
     }
 
     public function findAllQueryBuilder()
