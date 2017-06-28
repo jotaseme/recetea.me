@@ -11,7 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\UserType;
-
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,23 +19,28 @@ class UsersController extends Controller
 {
 
     /**
+     * Creates a new user with name, email and password
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Creates a user",
+     *  input="AppBundle\Form\UserType",
+     *  statusCodes={
+     *         201="Returned when resource created",
+     *         400="Form validation error"
+     *     }
+     * )
+     *
      * @Rest\Post("/users")
      * @View(serializerGroups={"user_detail"})
      */
     public function createUserAction(Request $request)
     {
-        // TODO: Check if user already exists in db
         $em = $this->getDoctrine()->getManager();
         $user = new User();
         $form = $this->get('form.factory')->createNamed('user_form', UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
-            $user_exists = $em->getRepository('AppBundle:User')->findOneBy(array(
-                'email'=>$form->getData()->getEmail()
-            ));
-            if($user_exists){
-                return new Response(\GuzzleHttp\json_encode('User already exists'), Response::HTTP_ACCEPTED);
-            }
             $encoder = $this->container->get('security.password_encoder');
             $encoded = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($encoded);
@@ -46,7 +51,7 @@ class UsersController extends Controller
                     'username' => $user->getEmail(),
                     'exp' => time() + 36000000
                 ]);
-            return new JsonResponse(['token' => $token]);
+            return new Response(json_encode(['token' => $token]), Response::HTTP_CREATED);
         }
         return $form;
     }
@@ -76,12 +81,10 @@ class UsersController extends Controller
                     return new JsonResponse(['token' => $token]);
                 }
             }else{
-                return new Response(\GuzzleHttp\json_encode('Resource not found.'), Response::HTTP_NOT_FOUND);
+                return new Response(json_encode('Resource not found.'), Response::HTTP_NOT_FOUND);
             }
         }
-        return new Response(\GuzzleHttp\json_encode('Resource not found.'), Response::HTTP_NOT_FOUND);
-
-
+        return new Response(json_encode('Resource not found.'), Response::HTTP_NOT_FOUND);
     }
 
 }
