@@ -6,12 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * User
  *
  * @ORM\Table(name="user")
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *     fields={"email"},
+ *     message="El email introducido ya existe en la base de datos")
  */
 class User implements UserInterface, \Serializable
 {
@@ -31,6 +35,7 @@ class User implements UserInterface, \Serializable
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      *
+     * @Assert\NotBlank()
      * @Groups({"recipe_detail", "user_detail"})
      */
     private $name;
@@ -38,9 +43,9 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=100, nullable=true)
+     * @ORM\Column(name="email", type="string", unique=true, length=100, nullable=true)
      * @Assert\Email(
-     *     message = "The email '{{ value }}' is not a valid email.",
+     *     message = "El email introducido '{{ value }}' no es un email valido.",
      *     checkMX = true
      * )
      *
@@ -51,7 +56,8 @@ class User implements UserInterface, \Serializable
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=45, nullable=true)
+     * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @Assert\NotBlank()
      */
     private $password;
 
