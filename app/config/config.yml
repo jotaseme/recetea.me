@@ -123,8 +123,7 @@ easy_admin:
               class: AppBundle\Entity\Recipe
               label: 'Recipes'
               list:
-                  fields: [{ property: 'idRecipe', label: 'ID ' },
-                   'name', { property: 'active', label: 'Status' }, 'duration', 'portions',  { property: 'idCategory', label: 'Category' }, { property: 'createdBy', label: 'User' } ]
+                  fields: [{ property: 'idRecipe', label: 'ID ' }, 'name', { property: 'active', label: 'Status' }, 'duration', 'portions',  { property: 'idCategory', label: 'Category' }, { property: 'createdBy', label: 'User' } ]
                   title: "Recipes"
                   actions:
                       - { name: 'show', label: 'Show' }
