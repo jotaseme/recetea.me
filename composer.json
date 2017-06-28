@@ -10,7 +10,7 @@
     "autoload-dev": {
         "psr-4": {
             "Tests\\Functional\\": "tests/functional",
-            "Tests\\DataFixtures\\ORM\\": "tests/datafixtures"
+            "Tests\\DataFixtures\\ORM\\": "tests/datafixtures/orm"
         },
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
