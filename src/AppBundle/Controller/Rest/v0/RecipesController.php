@@ -60,7 +60,7 @@ class RecipesController extends Controller
             'recipes' => $paginator->paginate(
                 $query,
                 $request->query->getInt('page', 1),
-                2
+                5
             )
         );
         return $recipes;
