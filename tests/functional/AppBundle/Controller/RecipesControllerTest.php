@@ -18,7 +18,7 @@ class RecipesControllerTest extends ApiTest
         $this->assertJson($response->getContent());
         $object = json_decode($response->getContent());
         $recipes = $object->recipes;
-        $this->assertEquals(2, count($recipes));
+        $this->assertEquals(5, count($recipes));
     }
 
     public function testGetRecipesWithPagination()
@@ -29,7 +29,7 @@ class RecipesControllerTest extends ApiTest
         $this->assertJson($response->getContent());
         $object = json_decode($response->getContent());
         $recipes = $object->recipes;
-        $this->assertEquals(2, count($recipes));
+        $this->assertEquals(5, count($recipes));
 
         $this->client->request('GET', '/api/v1/recipes?page=2');
         $response = $this->client->getResponse();
@@ -37,7 +37,7 @@ class RecipesControllerTest extends ApiTest
         $this->assertJson($response->getContent());
         $object = json_decode($response->getContent());
         $recipes = $object->recipes;
-        $this->assertEquals(2, count($recipes));
+        $this->assertEquals(5, count($recipes));
 
         $this->client->request('GET', '/api/v1/recipes?page=3');
         $response = $this->client->getResponse();
@@ -45,7 +45,7 @@ class RecipesControllerTest extends ApiTest
         $this->assertJson($response->getContent());
         $object = json_decode($response->getContent());
         $recipes = $object->recipes;
-        $this->assertEquals(1, count($recipes));
+        $this->assertEquals(3, count($recipes));
     }
 
     public function testGetRecipesContent()
