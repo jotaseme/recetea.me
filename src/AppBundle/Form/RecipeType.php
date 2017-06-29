@@ -55,7 +55,7 @@ class RecipeType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_recipe';
+        return 'recipe_form';
     }
 
 

@@ -110,7 +110,7 @@ lexik_jwt_authentication:
     public_key_path:  %kernel.root_dir%/../var/jwt/public.pem
     pass_phrase:      %jwt_key_pass_phrase%
     token_ttl:        3600000000
-
+    user_identity_field: email
 
 easy_admin:
     site_name: 'Recetea<em style="font-size: 80%;">ME</em>'

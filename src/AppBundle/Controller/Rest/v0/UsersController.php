@@ -48,7 +48,7 @@ class UsersController extends Controller
             $em->flush();
             $token = $this->get('lexik_jwt_authentication.encoder')
                 ->encode([
-                    'username' => $user->getEmail(),
+                    'email' => $user->getEmail(),
                     'exp' => time() + 36000000
                 ]);
             return new Response(json_encode(['token' => $token]), Response::HTTP_CREATED);
@@ -57,34 +57,51 @@ class UsersController extends Controller
     }
 
     /**
+     *
+     * Auths users credentials and returns the users JWT
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Generates a JWT for an existing user",
+     *  input="AppBundle\Form\UserLoginType",
+     *  statusCodes={
+     *         200="Successful request",
+     *         400="Form validation error",
+     *         401="Unauthorized",
+     *         404="Resource not found"
+     *     }
+     * )
+     * @View(serializerGroups={"user_detail"})
      * @Rest\Post("/users/auth")
      */
     public function loginUserAction(Request $request)
     {
         $form = $this->get('form.factory')->createNamed('login_form', UserLoginType::class);
         $form->handleRequest($request);
-        $email = $form->getData()->getEmail();
-        $password = $form->getData()->getPassword();
-        if(isset($email) && isset($password)){
+        if ($form->isValid() && $form->isSubmitted()) {
+
             $em = $this->getDoctrine()->getManager();
             $encoder = $this->container->get('security.password_encoder');
             $existing_user = $em->getRepository('AppBundle:User')->findOneBy(array(
-                'email' => $email
+                'email' => $form->getData()['email']
             ));
+
             if($existing_user){
-                if($encoder->isPasswordValid($existing_user,$password)){
+                if($encoder->isPasswordValid($existing_user,$form->getData()['password'])){
                     $token = $this->get('lexik_jwt_authentication.encoder')
                         ->encode([
-                            'username' => $existing_user->getEmail(),
+                            'email' => $existing_user->getUsername(),
                             'exp' => time() + 36000000
                         ]);
                     return new JsonResponse(['token' => $token]);
+                }else{
+                    return new Response(json_encode('Invalid password'), Response::HTTP_UNAUTHORIZED);
                 }
             }else{
                 return new Response(json_encode('Resource not found.'), Response::HTTP_NOT_FOUND);
             }
         }
-        return new Response(json_encode('Resource not found.'), Response::HTTP_NOT_FOUND);
+        return $form;
     }
 
 }

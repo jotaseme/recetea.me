@@ -3,8 +3,12 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserLoginType extends AbstractType
 {
@@ -14,8 +18,15 @@ class UserLoginType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('password');
+            ->add('email', EmailType::class,array(
+                'constraints' => array(
+                    new NotBlank(),
+                    new Email()
+                )))
+            ->add('password', TextType::class, array(
+                'constraints' => array(
+                    new NotBlank()
+                )));
     }
     
     /**
@@ -24,7 +35,6 @@ class UserLoginType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\User',
             'csrf_protection'=>false
         ));
     }
@@ -34,7 +44,7 @@ class UserLoginType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_user';
+        return 'login_form';
     }
 
 

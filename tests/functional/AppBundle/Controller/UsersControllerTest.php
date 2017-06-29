@@ -72,4 +72,52 @@ class UsersControllerTest extends ApiTest
         $this->assertJson($response->getContent());
     }
 
+    public function testLoginUser()
+    {
+        $this->client->request('POST', '/api/v1/users/auth', array(
+            'login_form' => array(
+                'email' => 'test1@gmail.com',
+                'password' => 'test'
+            )));
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+    }
+
+    public function testLoginNotRegisteredUser()
+    {
+        $this->client->request('POST', '/api/v1/users/auth', array(
+            'login_form' => array(
+                'email' => 'notregistereduser@gmail.com',
+                'password' => 'test'
+            )));
+        $response = $this->client->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+
+    }
+
+    public function testLoginUserWrongPassword()
+    {
+        $this->client->request('POST', '/api/v1/users/auth', array(
+            'login_form' => array(
+                'email' => 'test1@gmail.com',
+                'password' => 'wrongpassword'
+            )));
+        $response = $this->client->getResponse();
+        $this->assertEquals(401, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+    }
+
+    public function testLoginUserMalformedForm()
+    {
+        $this->client->request('POST', '/api/v1/users/auth', array(
+            'login_form' => array(
+                'email' => 'malformed_email',
+                'password' => 'test1'
+            )));
+        $response = $this->client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+    }
 }

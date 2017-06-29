@@ -48,7 +48,7 @@ class User implements UserInterface, \Serializable
      *     message = "El email introducido '{{ value }}' no es un email valido.",
      *     checkMX = true
      * )
-     *
+     * @Assert\NotBlank()
      * @Groups({"recipe_detail", "user_detail"})
      */
     private $email;
@@ -301,7 +301,7 @@ class User implements UserInterface, \Serializable
      */
     public function setActiveValue()
     {
-        $this->active = 0;
+        $this->active = 1;
     }
 
     /**
@@ -370,6 +370,7 @@ class User implements UserInterface, \Serializable
     public function getUsername()
     {
         // TODO: Implement getUsername() method.
+        return $this->email;
     }
 
     /**

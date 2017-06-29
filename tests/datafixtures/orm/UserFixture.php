@@ -13,7 +13,7 @@ class UserFixture extends AbstractFixture
         $user = new User();
         $user->setName('Test user');
         $user->setEmail('test@gmail.com');
-        $user->setPassword('test');
+        $user->setPassword('$2y$13$EN2NNVev0iDtxaG29u058eGl/jPHQlQRcI3FaQklZkraoNC/DjIMK');
         $manager->persist($user);
         $manager->flush();
     }

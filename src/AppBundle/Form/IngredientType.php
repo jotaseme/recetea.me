@@ -31,7 +31,7 @@ class IngredientType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_ingredient';
+        return 'recipe_ingredients';
     }
 
 

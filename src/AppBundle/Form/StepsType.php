@@ -31,7 +31,7 @@ class StepsType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_steps';
+        return 'recipe_steps';
     }
 
 

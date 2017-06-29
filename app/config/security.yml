@@ -6,8 +6,8 @@ security:
                 algorithm: bcrypt
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+           users:
+               entity: { class: AppBundle\Entity\User, property: email }
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -27,4 +27,4 @@ security:
 
             guard:
                   authenticators:
-                      - 'jwt_token_authenticator'
+                      - 'lexik_jwt_authentication.jwt_token_authenticator'

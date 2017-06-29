@@ -33,7 +33,7 @@ class TagsType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_tags';
+        return 'recipe_tags';
     }
 
 

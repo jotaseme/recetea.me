@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Steps
  *
@@ -23,6 +24,8 @@ class Steps
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=true)
      * @Groups({"recipe_detail"})

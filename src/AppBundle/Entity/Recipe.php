@@ -5,6 +5,7 @@
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Recipe
@@ -29,6 +30,8 @@ class Recipe
     /**
      * @var string
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      * @Groups({"recipes_list", "recipe_detail"})
      *
@@ -38,6 +41,8 @@ class Recipe
     /**
      * @var string
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(name="description", type="text", length=65535, nullable=true)
      * @Groups({"recipes_list", "recipe_detail"})
      *
@@ -46,6 +51,8 @@ class Recipe
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="duration", type="string", length=45, nullable=true)
      *
@@ -85,6 +92,8 @@ class Recipe
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
      *
      * @ORM\Column(name="portions", type="string", length=100, nullable=true)
      * @Groups({"recipe_detail"})

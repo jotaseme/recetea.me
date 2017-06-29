@@ -121,19 +121,31 @@ class RecipesController extends Controller
     }
 
     /**
+     * Creates a new recipe
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Creates a recipe",
+     *  input="AppBundle\Form\RecipeType",
+     *  statusCodes={
+     *         201="Returned when resource created",
+     *         400="Form validation error",
+     *         401="User authentication failed"
+     *     }
+     * )
+     *
      * @Rest\Post("/recipes")
      * @View(serializerGroups={"recipe_detail"})
      */
-    public function postRecipesAction(Request $request)
+    public function createRecipesAction(Request $request)
     {
+        if(!$this->getUser()){
+            return new Response(\GuzzleHttp\json_encode('Unauthorized.'), Response::HTTP_UNAUTHORIZED);
+        }
         $recipe = new Recipe();
         $form = $this->get('form.factory')->createNamed('recipe_form', RecipeType::class, $recipe);
         $form->handleRequest($request);
-
         if ($form->isValid() && $form->isSubmitted()) {
-            if(!$this->getUser()){
-                return new Response(\GuzzleHttp\json_encode('Unauthorized.'), Response::HTTP_UNAUTHORIZED);
-            }
             $em = $this->getDoctrine()->getManager();
             self::base64ToImage($form->getData()->getImage(),"./uploads/images/". $form->getData()->getName() .".jpg");
             $tags =  $recipe->getRecipeTags()->get(0)->getTag();
@@ -179,7 +191,7 @@ class RecipesController extends Controller
             $recipe->setCreatedBy($this->getUser());
             $em->persist($recipe);
             $em->flush();
-            return $recipe;
+            return new Response(json_encode(['recipe' => $recipe]), Response::HTTP_CREATED);
         }
 
         return $form;
