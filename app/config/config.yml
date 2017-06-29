@@ -111,6 +111,7 @@ lexik_jwt_authentication:
     pass_phrase:      %jwt_key_pass_phrase%
     token_ttl:        3600000000
 
+
 easy_admin:
     site_name: 'Recetea<em style="font-size: 80%;">ME</em>'
     disabled_actions: ['delete', 'new']
@@ -159,4 +160,35 @@ easy_admin:
               search:
                   help: null
                   title: "Recipes search"
+
+        User:
+                      class: AppBundle\Entity\User
+                      label: 'Users'
+                      list:
+                          fields: [{ property: 'idUser', label: 'ID ' }, 'name', 'email', { property: 'active', label: 'Status' }, { property: 'createdAt', label: 'Created' }, { property: 'updatedAt', label: 'Updated' }]
+                          title: "Users"
+                          actions:
+                              - { name: 'show', label: 'Show' }
+                              - { name: 'search', label: 'Search' }
+                              - { name: 'edit', label: 'Edit' }
+
+                      show:
+                          title: 'User (#%%entity_id%%) detail'
+                          fields:
+                               - { property: 'name', icon: 'customer' }
+                               - { property: 'email', icon: 'customer' }
+                               - { property: 'active', type: 'boolean' }
+                               - { property: 'createdAt', label: 'Created' }
+                               - { property: 'updatedAt', label: 'Updated' }
+                      edit:
+                          title: 'User (#%%entity_id%%) edit'
+                          fields:
+                              - { property: 'name', icon: 'customer' }
+                              - { property: 'email', icon: 'customer' }
+                              - { property: 'active' }
+                          actions:
+                              - { name: 'list', label: 'Back to list' }
+                      search:
+                          help: null
+                          title: "Users search"
 nelmio_api_doc: ~
