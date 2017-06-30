@@ -195,4 +195,35 @@ easy_admin:
                       search:
                           help: null
                           title: "Users search"
+
+        Comment:
+                              class: AppBundle\Entity\Comment
+                              label: 'Comments'
+                              list:
+                                  fields: [{ property: 'idComment', label: 'ID ' }, 'title', 'description', {property: 'idUser', label: 'User' },{ property: 'active', label: 'Status' }, { property: 'createdAt', label: 'Created' }, { property: 'updatedAt', label: 'Updated' }]
+                                  title: "Comments"
+                                  actions:
+                                      - { name: 'show', label: 'Show' }
+                                      - { name: 'search', label: 'Search' }
+                                      - { name: 'edit', label: 'Edit' }
+
+                              show:
+                                  title: 'Comment (#%%entity_id%%) detail'
+                                  fields:
+                                       - { property: 'name', icon: 'customer' }
+                                       - { property: 'title', icon: 'customer' }
+                                       - { property: 'description', type: 'boolean' }
+                                       - { property: 'createdAt', label: 'Created' }
+                                       - { property: 'updatedAt', label: 'Updated' }
+                              edit:
+                                  title: 'Comment (#%%entity_id%%) edit'
+                                  fields:
+                                      - { property: 'title', icon: 'customer' }
+                                      - { property: 'description', icon: 'customer' }
+                                      - { property: 'active' }
+                                  actions:
+                                      - { name: 'list', label: 'Back to list' }
+                              search:
+                                  help: null
+                                  title: "Comments search"
 nelmio_api_doc: ~
