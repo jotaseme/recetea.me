@@ -139,8 +139,9 @@ class RecipesController extends Controller
      */
     public function createRecipesAction(Request $request)
     {
+
         if(!$this->getUser()){
-            return new Response(\GuzzleHttp\json_encode('Unauthorized.'), Response::HTTP_UNAUTHORIZED);
+            return new Response(json_encode('Unauthorized.'), Response::HTTP_UNAUTHORIZED);
         }
         $recipe = new Recipe();
         $form = $this->get('form.factory')->createNamed('recipe_form', RecipeType::class, $recipe);
@@ -195,6 +196,30 @@ class RecipesController extends Controller
         }
 
         return $form;
+    }
+
+    /**
+     * Gets all recipes created by the logged user
+     *
+     * @ApiDoc(
+     *  resource=true,
+     *  description="Gets recipes from logged user",
+     *  statusCodes={
+     *         200="Successful request",
+     *         401="User authentication failed"
+     *     }
+     * )
+     *
+     * @Rest\Get("/recipes/user-profile")
+     * @View(serializerGroups={"recipe_user_profile"})
+     */
+    public function getSelfRecipes(){
+        if(!$user = $this->getUser()){
+            return new Response(json_encode('Unauthorized.'), Response::HTTP_UNAUTHORIZED);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $recipes = $em->getRepository('AppBundle:Recipe')->findBy(array('createdBy'=>$user));
+        return $recipes;
     }
 
     function base64ToImage($base64_string, $output_file) {

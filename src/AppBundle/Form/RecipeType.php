@@ -35,6 +35,11 @@ class RecipeType extends AbstractType
                 'entry_type'=>IngredientType::class,
                 'allow_add'=> true,
                 'by_reference' => false,
+            ))
+            ->add('recipe_comments', CollectionType::class, array(
+                'entry_type'=>CommentType::class,
+                'allow_add'=> true,
+                'by_reference' => false,
             ));
 
     }

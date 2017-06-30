@@ -36,7 +36,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
      *
      * @Assert\NotBlank()
-     * @Groups({"recipe_detail", "user_detail"})
+     * @Groups({"recipe_detail", "user_detail","recipe_comment"})
      */
     private $name;
 

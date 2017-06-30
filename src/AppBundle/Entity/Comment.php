@@ -3,12 +3,15 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Comment
  *
  * @ORM\Table(name="comment", indexes={@ORM\Index(name="fk_comment_user_idx", columns={"id_user"})})
  * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks()
  */
 class Comment
 {
@@ -18,6 +21,7 @@ class Comment
      * @ORM\Column(name="id_comment", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @Groups({"recipe_comment"})
      */
     private $idComment;
 
@@ -25,6 +29,8 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=45, nullable=true)
+     * @Assert\NotBlank()
+     * @Groups({"recipe_comment"})
      */
     private $title;
 
@@ -32,6 +38,8 @@ class Comment
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=true)
+     * @Assert\NotBlank()
+     * @Groups({"recipe_comment"})
      */
     private $description;
 
@@ -39,6 +47,7 @@ class Comment
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=true)
+     * @Groups({"recipe_comment"})
      */
     private $createdAt;
 
@@ -56,10 +65,32 @@ class Comment
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
      * })
+     * @Groups({"recipe_comment"})
      */
     private $idUser;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="active", type="boolean", nullable=true)
+     */
+    private $active;
 
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    /**
+     * @param bool $active
+     */
+    public function setActive(bool $active)
+    {
+        $this->active = $active;
+    }
 
     /**
      * Get idComment
@@ -189,5 +220,29 @@ class Comment
     public function getIdUser()
     {
         return $this->idUser;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAtValue()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function setUpdatedAtValue()
+    {
+        $this->updatedAt = new \DateTime();
+    }
+    /**
+     * @ORM\PrePersist
+     */
+    public function setActiveValue()
+    {
+        $this->active = 1;
     }
 }

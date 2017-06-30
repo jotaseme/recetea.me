@@ -22,7 +22,7 @@ class Recipe
      * @ORM\Column(name="id_recipe", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @Groups({"recipes_list", "recipe_detail"})
+     * @Groups({"recipes_list", "recipe_detail","recipe_user_profile"})
      *
      */
     private $idRecipe;
@@ -33,7 +33,7 @@ class Recipe
      * @Assert\NotBlank()
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
-     * @Groups({"recipes_list", "recipe_detail"})
+     * @Groups({"recipes_list", "recipe_detail", "recipe_user_profile"})
      *
      */
     private $name;
@@ -85,7 +85,7 @@ class Recipe
      * @var string
      *
      * @ORM\Column(name="image",  type="text", length=4294967295, nullable=true)
-     * @Groups({"recipes_list", "recipe_detail"})
+     * @Groups({"recipes_list", "recipe_detail","recipe_user_profile"})
      *
      */
     private $image;
@@ -174,6 +174,22 @@ class Recipe
     private $recipe_steps;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Comment", cascade={"persist"})
+     * @ORM\JoinTable(name="recipe_comments",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="id_recipe", referencedColumnName="id_recipe")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="id_comment", referencedColumnName="id_comment")
+     *   }
+     * )
+     *
+     */
+    private $recipe_comments;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -182,6 +198,48 @@ class Recipe
         $this->recipe_steps = new ArrayCollection();
         $this->recipe_tags = new ArrayCollection();
         $this->recipe_ingredients = new ArrayCollection();
+        $this->recipe_comments = new ArrayCollection();
+    }
+
+    /**
+     * Add recipeComment
+     *
+     * @param \AppBundle\Entity\Comment $recipeComment
+     *
+     * @return Recipe
+     */
+    public function addRecipeComment(Comment $recipeComment)
+    {
+        $this->recipe_comments[] = $recipeComment;
+
+        return $this;
+    }
+
+    /**
+     * Remove recipeComment
+     *
+     * @param \AppBundle\Entity\Comment $recipeComment
+     */
+    public function removeRecipeComment(Comment $recipeComment)
+    {
+        $this->recipe_comments->removeElement($recipeComment);
+    }
+
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecipeComments(): \Doctrine\Common\Collections\Collection
+    {
+        return $this->recipe_comments;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $recipe_comments
+     */
+    public function setRecipeComments(\Doctrine\Common\Collections\Collection $recipe_comments)
+    {
+        $this->recipe_comments = $recipe_comments;
     }
 
     /**
