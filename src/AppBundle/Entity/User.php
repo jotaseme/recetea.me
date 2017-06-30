@@ -26,7 +26,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      *
-     *  @Groups({"user_detail"})
+     *  @Groups({"user_detail","recipe_comment"})
      */
     private $idUser;
 
@@ -49,7 +49,7 @@ class User implements UserInterface, \Serializable
      *     checkMX = true
      * )
      * @Assert\NotBlank()
-     * @Groups({"recipe_detail", "user_detail"})
+     * @Groups({"recipe_detail", "user_detail","recipe_comment"})
      */
     private $email;
 
