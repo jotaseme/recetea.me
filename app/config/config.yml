@@ -100,9 +100,13 @@ knp_paginator:
         sortable: 'KnpPaginatorBundle:Pagination:sortable_link.html.twig' # sort link template
 
 lexik_form_filter:
+    listeners:
+        doctrine_orm: true
+        doctrine_dbal: false
+        doctrine_mongodb: false
     force_case_insensitivity: false
     encoding: ~
-    where_method: or
+    where_method: and
     condition_pattern: text.contains
 
 lexik_jwt_authentication:

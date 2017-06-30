@@ -28,7 +28,8 @@ class RecipesController extends Controller
      *  description="Returns a list of recipes",
      *  filters={
      *      {"name"="page", "dataType"="integer"},
-     *      {"name"="recipe_filter[name]", "dateType"="string"}
+     *      {"name"="recipe_filter[name]", "dateType"="string"},
+     *      {"name"="recipe_filter[tags]", "dateType"="string"}
      *  },
      *  statusCodes={
      *         200="Successful request"
