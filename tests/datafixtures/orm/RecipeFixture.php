@@ -4,10 +4,16 @@ namespace Tests\DataFixtures\ORM;
 
 use AppBundle\Entity\Recipe;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class RecipeFixture extends AbstractFixture
+class RecipeFixture extends AbstractFixture implements OrderedFixtureInterface
 {
+    public function getOrder()
+    {
+        return 5;
+    }
+
     public function load(ObjectManager $manager)
     {
         $recipe = new Recipe();

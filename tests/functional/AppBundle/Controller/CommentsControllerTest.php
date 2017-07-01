@@ -94,4 +94,14 @@ class CommentsControllerTest extends ApiTest
         $response = $this->client->getResponse();
         $this->assertEquals(401, $response->getStatusCode());
     }
+
+    public function testGetRecipeComments()
+    {
+        $this->client->request('GET', '/api/v1/recipes/1/comments');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $this->assertEquals(1, count(json_decode($response->getContent())));
+    }
+
 }

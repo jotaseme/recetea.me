@@ -14,6 +14,7 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Tests\DataFixtures\ORM\CommentFixture;
 use Tests\DataFixtures\ORM\IngredientFixture;
 use Tests\DataFixtures\ORM\RecipeFixture;
 use Tests\DataFixtures\ORM\StepsFixture;
@@ -60,6 +61,7 @@ abstract class  ApiTest extends WebTestCase
         $loader->addFixture(new TagsFixture(Tags::class));
         $loader->addFixture(new IngredientFixture(Ingredient::class));
         $loader->addFixture(new RecipeFixture(Recipe::class));
+        $loader->addFixture(new CommentFixture(Comment::class));
 
         $purger = new ORMPurger();
         $executor = new ORMExecutor($em, $purger);

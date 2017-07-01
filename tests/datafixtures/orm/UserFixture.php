@@ -4,9 +4,10 @@ namespace Tests\DataFixtures\ORM;
 
 use AppBundle\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class UserFixture extends AbstractFixture
+class UserFixture extends AbstractFixture  implements OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
@@ -16,5 +17,10 @@ class UserFixture extends AbstractFixture
         $user->setPassword('$2y$13$EN2NNVev0iDtxaG29u058eGl/jPHQlQRcI3FaQklZkraoNC/DjIMK');
         $manager->persist($user);
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 4;
     }
 }
