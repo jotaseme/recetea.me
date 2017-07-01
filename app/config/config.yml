@@ -210,9 +210,8 @@ easy_admin:
                               show:
                                   title: 'Comment (#%%entity_id%%) detail'
                                   fields:
-                                       - { property: 'name', icon: 'customer' }
                                        - { property: 'title', icon: 'customer' }
-                                       - { property: 'description', type: 'boolean' }
+                                       - { property: 'description' }
                                        - { property: 'createdAt', label: 'Created' }
                                        - { property: 'updatedAt', label: 'Updated' }
                               edit:
