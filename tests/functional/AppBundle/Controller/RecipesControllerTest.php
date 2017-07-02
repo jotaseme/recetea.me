@@ -246,4 +246,109 @@ class RecipesControllerTest extends ApiTest
         $response = $this->client->getResponse();
         $this->assertEquals(401, 401);
     }
+
+    public function testGetRecipesByName(){
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[name]=busqueda');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(1, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[name]=recipe');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(5, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[name]=Sin resultados');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(0, count($recipes));
+    }
+
+    public function testGetRecipesByNameWithPagination(){
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[name]=recipe');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(5, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[name]=recipe&page=2');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(5, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[name]=recipe&page=3');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(3, count($recipes));
+    }
+
+
+    public function testGetRecipesByTag(){
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[recipe_tags][0][tag]=test');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(1, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[recipe_tags][0][tag]=tag');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(5, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[recipe_tags][0][tag]=Sin resultados');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(0, count($recipes));
+    }
+
+    public function testGetRecipesByTagWithPagination(){
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[recipe_tags][0][tag]=tag');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(5, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[recipe_tags][0][tag]=tag&page=2');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(5, count($recipes));
+
+        $this->client->request('GET', '/api/v1/recipes?recipe_filter[recipe_tags][0][tag]=tag&page=3');
+        $response = $this->client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertJson($response->getContent());
+        $object = json_decode($response->getContent());
+        $recipes = $object->recipes;
+        $this->assertEquals(2, count($recipes));
+    }
 }

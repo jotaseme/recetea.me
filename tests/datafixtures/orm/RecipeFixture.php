@@ -149,12 +149,12 @@ class RecipeFixture extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
 
         $recipe = new Recipe();
-        $recipe->setName('Test recipe 13');
+        $recipe->setName('Test recipe 13 busqueda');
         $recipe->setDescription('Test description');
         $recipe->setCreatedBy($manager->getRepository('AppBundle:User')->findOneBy([]));
         $recipe->addRecipeStep($manager->getRepository('AppBundle:Steps')->findOneBy([]));
         $recipe->addRecipeIngredient($manager->getRepository('AppBundle:Ingredient')->findOneBy([]));
-        $recipe->addRecipeTag($manager->getRepository('AppBundle:Tags')->findOneBy([]));
+        $recipe->addRecipeTag($manager->getRepository('AppBundle:Tags')->findOneBy(array('tag'=>'test')));
         $recipe->setActive(1);
         $manager->persist($recipe);
         $manager->flush();

@@ -15,6 +15,11 @@ class TagsFixture extends AbstractFixture implements OrderedFixtureInterface
         $tag->setTag('tag 1');
         $manager->persist($tag);
         $manager->flush();
+
+        $tag = new Tags();
+        $tag->setTag('test');
+        $manager->persist($tag);
+        $manager->flush();
     }
 
 
